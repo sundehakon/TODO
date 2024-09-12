@@ -7,7 +7,7 @@ fn main() {
     println!("1. See To-Do list");
     println!("2. Write new To-Do");
     // Add logic for removing items from list
-    println!("3. Remove from To-Do list");
+    // println!("3. Remove from To-Do list");
 
     let mut input = String::new();
     println!("Choose your operation:");
