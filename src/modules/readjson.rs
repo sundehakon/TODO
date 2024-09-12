@@ -9,7 +9,13 @@ pub struct Todo {
     pub text: String,
 }
 
-pub fn read_json_file(filename: String) -> Vec<Todo> {
+#[derive(Serialize, Deserialize)]
+pub struct Quote {
+    pub quote: String,
+    pub author: String,
+}
+
+pub fn read_json_file<T: for<'de> Deserialize<'de>>(filename: String) -> Vec<T> {
     let path = Path::new(&filename);
     
     if !path.exists() {
@@ -24,16 +30,16 @@ pub fn read_json_file(filename: String) -> Vec<Todo> {
     serde_json::from_str(&fdata).unwrap_or_else(|_| vec![])
 }
 
-pub fn write_json_file(filename: String, todos: &Vec<Todo>) {
+pub fn write_json_file<T: Serialize>(filename: String, data: &Vec<T>) {
     let mut file = File::create(filename).expect("Unable to create file");
-    let json = serde_json::to_string_pretty(&todos).expect("Unable to serialize data");
+    let json = serde_json::to_string_pretty(&data).expect("Unable to serialize data");
     file.write_all(json.as_bytes()).expect("Unable to write data to file");
 
-    println!("Todos updated successfully!");
+    println!("Data updated successfully!");
 }
 
 pub fn get_user_input() -> Todo {
-    println!("Enter text:");
+    println!("Enter your todo item:");
 
     let mut input = String::new();
     io::stdin().read_line(&mut input).expect("Failed to read line");
@@ -44,7 +50,7 @@ pub fn get_user_input() -> Todo {
 }
 
 pub fn remove_todo_by_index(filename: String, index: usize) {
-    let mut todos = read_json_file(filename.clone());
+    let mut todos: Vec<Todo> = read_json_file(filename.clone());
 
     if index >= todos.len() {
         println!("Invalid index.");
@@ -52,6 +58,5 @@ pub fn remove_todo_by_index(filename: String, index: usize) {
     }
 
     todos.remove(index);
-
     write_json_file(filename, &todos);
 }

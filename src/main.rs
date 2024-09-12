@@ -1,31 +1,33 @@
 mod modules;
-use modules::readjson;
-use std::{io, usize};
+use modules::readjson::{Todo, Quote};
+use std::io;
+use rand::seq::SliceRandom;
 
 fn main() {
-    loop {
         println!("Welcome to your personal To-Do list!");
+    loop {
         println!("Choose an option:");
         println!("1. Add a new todo");
         println!("2. Remove a todo");
         println!("3. Display todos");
-        println!("4. Exit");
+        println!("4. Need motivation?");
+        println!("5. Exit");
 
         let mut choice = String::new();
         io::stdin().read_line(&mut choice).expect("Failed to read line");
 
         match choice.trim() {
             "1" => {
-                let new_todo = readjson::get_user_input();
+                let new_todo = modules::readjson::get_user_input();
 
                 let filename = "src/data.json".to_string();
-                let mut todos = readjson::read_json_file(filename.clone());
+                let mut todos: Vec<Todo> = modules::readjson::read_json_file(filename.clone());
                 todos.push(new_todo);
-                readjson::write_json_file(filename, &todos);
+                modules::readjson::write_json_file(filename, &todos);
             }
             "2" => {
                 let filename = "src/data.json".to_string();
-                let todos = readjson::read_json_file(filename.clone());
+                let todos: Vec<Todo> = modules::readjson::read_json_file(filename.clone());
 
                 if todos.is_empty() {
                     println!("No todos to remove.");
@@ -49,11 +51,11 @@ fn main() {
                     }
                 };
 
-                readjson::remove_todo_by_index(filename, index);
+                modules::readjson::remove_todo_by_index(filename, index);
             }
             "3" => {
                 let filename = "src/data.json".to_string();
-                let todos = readjson::read_json_file(filename);
+                let todos: Vec<Todo> = modules::readjson::read_json_file(filename);
 
                 if todos.is_empty() {
                     println!("No todos available.");
@@ -65,6 +67,20 @@ fn main() {
                 }
             }
             "4" => {
+                let filename = "src/quotes.json".to_string();
+                let quotes: Vec<Quote> = modules::readjson::read_json_file(filename.clone());
+
+                if quotes.is_empty() {
+                    println!("No quotes available.");
+                } else {
+                    let random_quote = quotes.choose(&mut rand::thread_rng());
+                    match random_quote {
+                        Some(quote) => println!("\"{}\" - {}", quote.quote, quote.author),
+                        None => println!("Could not retrieve a random quote."),
+                    }
+                }
+            }
+            "5" => {
                 println!("Goodbye!");
                 break;
             }
