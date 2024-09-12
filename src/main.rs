@@ -1,3 +1,6 @@
+mod modules;
+use modules::readjson;
+
 fn main() {
-    println!("Hello, world!");
+    readjson::read_json_file("/src/data.json".to_string());
 }
