@@ -9,7 +9,7 @@ fn main() {
         println!("Choose an option:");
         println!("1. Add a new todo");
         println!("2. Remove a todo");
-        println!("3. Display todos");
+        println!("3. Display todo's");
         println!("4. Need motivation?");
         println!("5. Exit");
 
@@ -30,11 +30,11 @@ fn main() {
                 let todos: Vec<Todo> = modules::readjson::read_json_file(filename.clone());
 
                 if todos.is_empty() {
-                    println!("No todos to remove.");
+                    println!("No todo's to remove.");
                     continue;
                 }
 
-                println!("Here are your todos:");
+                println!("Here are your todo's:");
                 for (index, todo) in todos.iter().enumerate() {
                     println!("{}. {}", index + 1, todo.text);
                 }
@@ -60,7 +60,7 @@ fn main() {
                 if todos.is_empty() {
                     println!("No todos available.");
                 } else {
-                    println!("Here are your todos:");
+                    println!("Here are your todo's:");
                     for (index, todo) in todos.iter().enumerate() {
                         println!("{}. {}", index + 1, todo.text);
                     }
