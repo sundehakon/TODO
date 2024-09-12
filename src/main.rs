@@ -19,24 +19,27 @@ fn main() {
     let input: i32 = match input.trim().parse() {
         Ok(num) => num,
         Err(_) => {
-            println!("Please enter a number");
+            println!("Please enter a valid number.");
             return;
         }
     };
 
-    if input > 3 {
-        println!("Please choose a number from the list!");
-    }
-
-    if input == 1 {
-        let todos = readjson::read_json_file("src/data.json".to_string());
-        for todo in todos {
-            println!("Todo: {}", todo.text);
+    match input {
+        1 => {
+            let todos = readjson::read_json_file("src/data.json".to_string());
+            for todo in todos {
+                println!("Todo: {}", todo.text);
+            }
         }
-    }
-
-    if input == 2 {
-        let new_todo = readjson::get_user_input();
-        readjson::write_json_file("src/data.json".to_string(), new_todo);
+        2 => {
+            let new_todo = readjson::get_user_input();
+            readjson::write_json_file("src/data.json".to_string(), new_todo);
+        }
+        3 => {
+            println!("This option will be available soon!");
+        }
+        _ => {
+            println!("Please choose a valid option from the list.");
+        }
     }
 }
