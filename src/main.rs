@@ -39,7 +39,7 @@ fn main() {
                     println!("{}. {}", index + 1, todo.text);
                 }
 
-                println!("Enter the number of the todo you want to remove:");
+                println!("Enter the number of the todo you have finished:");
 
                 let mut index = String::new();
                 io::stdin().read_line(&mut index).expect("Failed to read line");
